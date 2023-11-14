@@ -21,7 +21,7 @@ public class RedisCredentials {
      * @param section The yaml section.
      * @return The redis credentials.
      */
-    public RedisCredentials fromSection(Section section) {
+    public static RedisCredentials fromSection(Section section) {
         Optional<String> uri = section.getOptionalString("uri");
         if (uri.isPresent()) return new RedisCredentials(uri.get());
 
