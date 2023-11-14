@@ -1,0 +1,63 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id "java"
+    id "io.freefair.lombok" version "8.4"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+var name = "Cosmo"
+var author = "J4C0B3Y"
+description = "Library for voided plugins."
+group = "gg.voided"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io/" }
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
+    compileOnly "me.clip:placeholderapi:2.11.4"
+    implementation "dev.dejvokep:boosted-yaml-spigot:1.4"
+    implementation "redis.clients:jedis:5.0.1"
+    implementation 'org.mongodb:mongodb-driver-sync:4.11.0'
+    implementation 'com.github.Revxrsal.Lamp:common:3.1.7'
+    implementation 'com.github.Revxrsal.Lamp:bukkit:3.1.7'
+    implementation "net.kyori:adventure-api:4.14.0"
+    implementation "net.kyori:adventure-text-minimessage:4.14.0"
+}
+
+compileJava {
+    options.compilerArgs.add "-XDignore.symbol.file"
+    options.compilerArgs.add "-Werror"
+    options.compilerArgs.add "-parameters"
+    options.encoding = "UTF-8"
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+            name: name,
+            author: author,
+            description: description,
+            version: version
+    ]
+}
+
+tasks.register('copyJars', Copy) {
+    from tasks.findByPath("shadowJar")
+    rename "(.*)-all.jar", name + "-" + version + ".jar"
+    into file("jars")
+}
+
+tasks.register("cleanJars") {
+    delete file("jars")
+}
+
+jar.dependsOn "shadowJar"
+jar.dependsOn "copyJars"
+clean.dependsOn "cleanJars"
