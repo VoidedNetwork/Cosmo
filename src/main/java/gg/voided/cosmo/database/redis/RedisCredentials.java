@@ -1,4 +1,4 @@
-package gg.voided.cosmo.redis;
+package gg.voided.cosmo.database.redis;
 
 import dev.dejvokep.boostedyaml.block.implementation.Section;
 import lombok.AllArgsConstructor;

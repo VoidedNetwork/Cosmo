@@ -1,4 +1,4 @@
-package gg.voided.cosmo.redis;
+package gg.voided.cosmo.database.redis;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;

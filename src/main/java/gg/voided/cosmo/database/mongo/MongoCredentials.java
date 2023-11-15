@@ -1,4 +1,4 @@
-package gg.voided.cosmo.mongo;
+package gg.voided.cosmo.database.mongo;
 
 import com.mongodb.ConnectionString;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
