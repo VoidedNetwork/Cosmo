@@ -33,7 +33,7 @@ public class RedisCredentials {
         StringBuilder connection = new StringBuilder("redis://");
 
         username.ifPresent(value -> connection.append(value).append(":"));
-        password.ifPresent(value -> connection.append(password));
+        password.ifPresent(connection::append);
         if (username.isPresent() || password.isPresent()) connection.append("@");
 
         connection.append(host).append(":").append(port);
