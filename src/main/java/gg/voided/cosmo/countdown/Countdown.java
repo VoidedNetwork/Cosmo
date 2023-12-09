@@ -41,8 +41,7 @@ public abstract class Countdown {
      */
     private void tick() {
         onTick(seconds);
-        seconds--;
-        if (seconds == 0) finish();
+        if (seconds-- == 0) finish();
     }
 
     /**
