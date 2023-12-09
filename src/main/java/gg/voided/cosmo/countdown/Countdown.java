@@ -1,11 +1,16 @@
 package gg.voided.cosmo.countdown;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+@RequiredArgsConstructor
 public abstract class Countdown {
+    private final JavaPlugin plugin;
+
     /**
      * Seconds remaining.
      */
@@ -26,7 +31,7 @@ public abstract class Countdown {
     public void start(int seconds) {    
         if (running) throw new IllegalStateException("Tried to start a running countdown.");
         this.seconds = seconds;
-        task = Bukkit.getScheduler().runTaskTimer(null, this::tick, 0, 20);
+        task = Bukkit.getScheduler().runTaskTimer(plugin, this::tick, 0, 20);
         running = true;
         onStart();
     }
