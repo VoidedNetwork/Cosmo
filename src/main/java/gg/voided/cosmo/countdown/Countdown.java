@@ -29,7 +29,7 @@ public abstract class Countdown {
      * @throws IllegalStateException If there is a running countdown.
      */
     public void start(int seconds) {    
-        if (running) throw new IllegalStateException("Tried to start a running countdown.");
+        if (running) throw new IllegalStateException("Started a running countdown.");
         this.seconds = seconds;
         task = Bukkit.getScheduler().runTaskTimer(plugin, this::tick, 0, 20);
         running = true;
@@ -66,7 +66,7 @@ public abstract class Countdown {
      * @throws IllegalStateException If there is no running timer.
      */
     public void cancel() {
-        if (!running) throw new IllegalStateException("Tried to cancel a stopped countdown.");
+        if (!running) throw new IllegalStateException("Cancelled a stopped countdown.");
         reset();
         onCancel();
     }
