@@ -40,8 +40,13 @@ public abstract class Countdown {
      * Ticks the countdown.
      */
     private void tick() {
+        if (seconds == 0) {
+            finish();
+            return;
+        }
+
         onTick(seconds);
-        if (seconds-- == 0) finish();
+        seconds--;
     }
 
     /**
