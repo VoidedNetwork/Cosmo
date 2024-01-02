@@ -25,6 +25,7 @@ public class Redis {
     public Redis(@NotNull RedisCredentials credentials) {
         this.credentials = credentials;
         this.pool = new JedisPool(credentials.getUri());
+        this.pool.getResource().ping();
     }
 
     /**
