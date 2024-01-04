@@ -27,8 +27,8 @@ public class Layout {
     private final ArrayList<EntryInfo> entries = new ArrayList<>();
     private final Player player;
 
-    private String header;
-    private String footer;
+    private String header = "";
+    private String footer = "";
 
     public void create() {
         Team global = player.getScoreboard().getTeam("tab");
