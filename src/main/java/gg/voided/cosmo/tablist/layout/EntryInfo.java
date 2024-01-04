@@ -5,15 +5,18 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTe
 import gg.voided.cosmo.tablist.adapter.Bars;
 import gg.voided.cosmo.tablist.skin.Skin;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor @Getter @Setter
+@Getter @Setter
 public class EntryInfo {
-    private final UserProfile profile;
+    private UserProfile profile;
     private int ping = Bars.NONE.getPing();
     private Skin skin = Skin.DEFAULT;
     private String prefix = "";
     private String suffix = "";
     private WrapperPlayServerTeams.ScoreBoardTeamInfo team = null;
+
+    public EntryInfo(UserProfile profile) {
+        this.profile = profile;
+    }
 }
