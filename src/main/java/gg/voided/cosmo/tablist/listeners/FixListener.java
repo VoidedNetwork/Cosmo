@@ -3,18 +3,14 @@ package gg.voided.cosmo.tablist.listeners;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
-import com.github.retrooper.packetevents.util.adventure.AdventureSerializer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
-import gg.voided.cosmo.tablist.TabHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class FixListener extends PacketListenerAbstract {
-    private final TabHandler handler = TabHandler.getInstance();
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
@@ -29,29 +25,13 @@ public class FixListener extends PacketListenerAbstract {
             UserProfile profile = data.getUserProfile();
             if (profile == null) return;
 
-            boolean cancel = prevent(player, profile);
-
-            if (cancel) {
-                Bukkit.getScheduler().runTaskLaterAsynchronously(handler.getPlugin(), () -> {
-                    WrapperPlayServerPlayerInfo remove = new WrapperPlayServerPlayerInfo(
-                        WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
-                        new WrapperPlayServerPlayerInfo.PlayerData(
-                            AdventureSerializer.fromLegacyFormat(profile.getName()),
-                            profile,
-                            GameMode.SURVIVAL,
-                            0
-                        )
-                    );
-
-                    handler.getPacketEvents().getPlayerManager().sendPacket(player, remove);
-                }, 1);
-            }
+            prevent(player, profile);
         }
     }
 
-    private boolean prevent(Player player, UserProfile profile) {
+    private void prevent(Player player, UserProfile profile) {
         Player online = Bukkit.getPlayer(profile.getUUID());
-        if (online == null) return false;
+        if (online == null) return;
 
         Scoreboard scoreboard = player.getScoreboard();
         Team team = scoreboard.getTeam("tab");
@@ -62,12 +42,8 @@ public class FixListener extends PacketListenerAbstract {
             for (Player other : Bukkit.getOnlinePlayers()) {
                 team.addEntry(other.getName());
             }
-
-            team.addEntry(online.getName());
-            return true;
         }
 
         team.addEntry(online.getName());
-        return false;
     }
 }
