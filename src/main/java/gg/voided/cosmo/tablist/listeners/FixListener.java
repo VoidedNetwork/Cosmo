@@ -3,14 +3,17 @@ package gg.voided.cosmo.tablist.listeners;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
+import gg.voided.cosmo.tablist.TabHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class FixListener extends PacketListenerAbstract {
+    private final TabHandler handler = TabHandler.getInstance();
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
@@ -19,12 +22,24 @@ public class FixListener extends PacketListenerAbstract {
         WrapperPlayServerPlayerInfo packet = new WrapperPlayServerPlayerInfo(event);
         if (packet.getAction() != WrapperPlayServerPlayerInfo.Action.ADD_PLAYER) return;
 
+        Player player = (Player) event.getPlayer();
+
         for (WrapperPlayServerPlayerInfo.PlayerData data : packet.getPlayerDataList()) {
             UserProfile profile = data.getUserProfile();
             if (profile == null) return;
 
-            boolean cancel = prevent((Player) event.getPlayer(), profile);
-            if (cancel) event.setCancelled(true);
+            boolean cancel = prevent(player, profile);
+
+            if (cancel) {
+                event.setCancelled(true);
+
+                WrapperPlayServerPlayerInfo remove = new WrapperPlayServerPlayerInfo(
+                    WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
+                    new WrapperPlayServerPlayerInfo.PlayerData(null, event.getUser().getProfile(), GameMode.SURVIVAL, 0)
+                );
+
+                handler.getPacketEvents().getPlayerManager().sendPacket(player, remove);
+            }
         }
     }
 
