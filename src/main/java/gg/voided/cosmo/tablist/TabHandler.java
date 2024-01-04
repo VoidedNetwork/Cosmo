@@ -24,8 +24,9 @@ public class TabHandler {
     private final JavaPlugin plugin;
     private final PacketEventsAPI<?> packetEvents;
     private final Map<Player, Layout> layouts = new ConcurrentHashMap<>();
-    private final ConnectionListener listener = new ConnectionListener();
     private final SkinCache skinCache = new SkinCache();
+
+    private final ConnectionListener listener;
 
     private UpdateTask task;
     private TabAdapter adapter;
@@ -35,6 +36,8 @@ public class TabHandler {
 
         this.plugin = plugin;
         this.packetEvents = packetEvents;
+
+        this.listener = new ConnectionListener();
 
         Bukkit.getPluginManager().registerEvents(listener, plugin);
         Bukkit.getPluginManager().registerEvents(new SkinCacheListener(), plugin);
