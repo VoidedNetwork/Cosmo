@@ -211,11 +211,11 @@ public class Layout {
             entries.add(info);
 
             String name = getTeam(entries.size() + i);
-            Team team = player.getScoreboard().getTeam(name);
+            Team team = player.getScoreboard().getTeam("$" + name);
 
             if (team == null) {
-                team = player.getScoreboard().registerNewTeam(name);
-                team.addEntry("$" + name);
+                team = player.getScoreboard().registerNewTeam("$" + name);
+                team.addEntry(name);
             }
 
             data.add(
