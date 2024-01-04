@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
@@ -32,7 +33,12 @@ public class Layout {
 
     public void create() {
         Team global = player.getScoreboard().getTeam("tab");
-        if (global == null) global = player.getScoreboard().registerNewTeam("tab");
+
+        if (global == null) {
+            global = player.getScoreboard().registerNewTeam("tab");
+            global.setNameTagVisibility(NameTagVisibility.NEVER);
+        }
+
         Bukkit.getOnlinePlayers().stream().filter(Objects::nonNull).map(Player::getName).forEach(global::addEntry);
 
         for (Player other : Bukkit.getOnlinePlayers()) {

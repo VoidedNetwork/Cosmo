@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -36,6 +37,7 @@ public class FixListener extends PacketListenerAbstract {
 
         if (team == null) {
             team = scoreboard.registerNewTeam("tab");
+            team.setNameTagVisibility(NameTagVisibility.NEVER);
 
             for (Player other : Bukkit.getOnlinePlayers()) {
                 team.addEntry(other.getName());
