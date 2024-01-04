@@ -39,13 +39,13 @@ public class FixListener extends PacketListenerAbstract {
 
         if (team == null) {
             team = scoreboard.registerNewTeam("tab");
-            team.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
 
             for (Player other : Bukkit.getOnlinePlayers()) {
                 team.addEntry(other.getName());
             }
         }
 
+        team.setNameTagVisibility(NameTagVisibility.NEVER);
         team.addEntry(online.getName());
     }
 }
