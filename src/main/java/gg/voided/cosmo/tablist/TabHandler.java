@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import gg.voided.cosmo.tablist.adapter.TabAdapter;
 import gg.voided.cosmo.tablist.layout.Layout;
 import gg.voided.cosmo.tablist.listeners.ConnectionListener;
+import gg.voided.cosmo.tablist.listeners.FixListener;
 import gg.voided.cosmo.tablist.listeners.SkinCacheListener;
 import gg.voided.cosmo.tablist.skin.cache.SkinCache;
 import gg.voided.cosmo.tablist.tasks.UpdateTask;
@@ -39,6 +40,7 @@ public class TabHandler {
 
         this.listener = new ConnectionListener();
 
+        packetEvents.getEventManager().registerListener(new FixListener());
         Bukkit.getPluginManager().registerEvents(listener, plugin);
         Bukkit.getPluginManager().registerEvents(new SkinCacheListener(), plugin);
     }
