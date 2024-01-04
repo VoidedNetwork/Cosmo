@@ -54,7 +54,8 @@ public class Layout {
         for (int i = 0; i < entries.size(); i++) {
             Player player = entries.get(i).getPlayer();
 
-            if (player != null) this.entries.get(i).setProfile(createProfile(player, i));
+            if (player != null) this.entries.get(i)
+                .setProfile(handler.getPacketEvents().getPlayerManager().getUser(player).getProfile());
             update(i, entries.get(i));
         }
     }
@@ -232,15 +233,6 @@ public class Layout {
         }
 
         sendPacket(packet);
-    }
-
-    private UserProfile createProfile(Player player, int index) {
-        UserProfile profile = new UserProfile(player.getUniqueId(), getTeam(index));
-        Skin skin = Skin.get(player);
-        TextureProperty texture = new TextureProperty("textures", skin.getValue(), skin.getSignature());
-        profile.setTextureProperties(Collections.singletonList(texture));
-
-        return profile;
     }
 
     private UserProfile createProfile(int index) {
