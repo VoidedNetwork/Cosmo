@@ -33,11 +33,7 @@ public class Layout {
 
     public void create() {
         Team global = player.getScoreboard().getTeam("tab");
-
-        if (global == null) {
-            global = player.getScoreboard().registerNewTeam("tab");
-            global.setNameTagVisibility(NameTagVisibility.NEVER);
-        }
+        if (global == null) global = player.getScoreboard().registerNewTeam("tab");
 
         Bukkit.getOnlinePlayers().stream().filter(Objects::nonNull).map(Player::getName).forEach(global::addEntry);
 

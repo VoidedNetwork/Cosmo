@@ -7,7 +7,6 @@ import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -24,26 +23,30 @@ public class FixListener extends PacketListenerAbstract {
             UserProfile profile = data.getUserProfile();
             if (profile == null) return;
 
-            prevent((Player) event.getPlayer(), profile);
+            boolean cancel = prevent((Player) event.getPlayer(), profile);
+            if (cancel) event.setCancelled(true);
         }
     }
 
-    private void prevent(Player player, UserProfile profile) {
+    private boolean prevent(Player player, UserProfile profile) {
         Player online = Bukkit.getPlayer(profile.getUUID());
-        if (online == null) return;
+        if (online == null) return false;
 
         Scoreboard scoreboard = player.getScoreboard();
         Team team = scoreboard.getTeam("tab");
 
         if (team == null) {
             team = scoreboard.registerNewTeam("tab");
-            team.setNameTagVisibility(NameTagVisibility.NEVER);
 
             for (Player other : Bukkit.getOnlinePlayers()) {
                 team.addEntry(other.getName());
             }
+
+            team.addEntry(online.getName());
+            return true;
         }
 
         team.addEntry(online.getName());
+        return false;
     }
 }
