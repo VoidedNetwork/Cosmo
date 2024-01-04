@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
+import com.github.retrooper.packetevents.util.adventure.AdventureSerializer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import gg.voided.cosmo.tablist.TabHandler;
 import org.bukkit.Bukkit;
@@ -31,14 +32,19 @@ public class FixListener extends PacketListenerAbstract {
             boolean cancel = prevent(player, profile);
 
             if (cancel) {
-                event.setCancelled(true);
+                Bukkit.getScheduler().runTaskLaterAsynchronously(handler.getPlugin(), () -> {
+                    WrapperPlayServerPlayerInfo remove = new WrapperPlayServerPlayerInfo(
+                        WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
+                        new WrapperPlayServerPlayerInfo.PlayerData(
+                            AdventureSerializer.fromLegacyFormat(profile.getName()),
+                            profile,
+                            GameMode.SURVIVAL,
+                            0
+                        )
+                    );
 
-                WrapperPlayServerPlayerInfo remove = new WrapperPlayServerPlayerInfo(
-                    WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
-                    new WrapperPlayServerPlayerInfo.PlayerData(null, event.getUser().getProfile(), GameMode.SURVIVAL, 0)
-                );
-
-                handler.getPacketEvents().getPlayerManager().sendPacket(player, remove);
+                    handler.getPacketEvents().getPlayerManager().sendPacket(player, remove);
+                }, 1);
             }
         }
     }
