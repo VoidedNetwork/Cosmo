@@ -1,4 +1,4 @@
-package gg.voided.cosmo.metadata;
+package gg.voided.cosmo.utils;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 @UtilityClass
-public class Metadata {
+public class MetadataUtils {
 
     /**
      * Gets a metadata value from an object using a key and the owning plugin.
