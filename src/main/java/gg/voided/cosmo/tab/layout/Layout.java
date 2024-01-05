@@ -16,6 +16,7 @@ import gg.voided.cosmo.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -32,10 +33,13 @@ public class Layout {
         WrapperPlayServerPlayerInfo packet = new WrapperPlayServerPlayerInfo(WrapperPlayServerPlayerInfo.Action.ADD_PLAYER);
         List<WrapperPlayServerPlayerInfo.PlayerData> players = packet.getPlayerDataList();
 
+        Team team = player.getScoreboard().getTeam("tab:entry");
+        if (team == null) team = player.getScoreboard().registerNewTeam("tab:entry");
+
         for (int index = 0; index < 80; index++) {
             UserProfile profile = createProfile(index);
             entries.add(new EntryInfo(profile));
-            createTeam(index);
+            team.addEntry(getContent(index));
 
             players.add(
                 new WrapperPlayServerPlayerInfo.PlayerData(
@@ -48,12 +52,6 @@ public class Layout {
         }
 
         sendPacket(packet);
-    }
-
-    private void createTeam(int index) {
-        String name = getTeam(index);
-        if (player.getScoreboard().getTeam(name) != null) return;
-        player.getScoreboard().registerNewTeam(name).addEntry(getContent(index));
     }
 
     public void update(String header, String footer, List<TabEntry> entries) {
@@ -174,15 +172,11 @@ public class Layout {
     }
 
     private UserProfile createProfile(int index) {
-        UserProfile profile = new UserProfile(UUID.randomUUID(), getTeam(index));
+        UserProfile profile = new UserProfile(UUID.randomUUID(), getContent(index));
         TextureProperty texture = new TextureProperty("textures", Skin.DEFAULT.getValue(), Skin.DEFAULT.getSignature());
         profile.setTextureProperties(Collections.singletonList(texture));
 
         return profile;
-    }
-
-    private String getTeam(int index) {
-        return "tab:" + index % 4 + "," + index / 4;
     }
 
     private String getContent(int index) {
