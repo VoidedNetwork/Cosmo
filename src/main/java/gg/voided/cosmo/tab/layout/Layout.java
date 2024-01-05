@@ -39,7 +39,7 @@ public class Layout {
 
             players.add(
                 new WrapperPlayServerPlayerInfo.PlayerData(
-                    AdventureSerializer.fromLegacyFormat(getTeam(index)),
+                    AdventureSerializer.fromLegacyFormat(getContent(index)),
                     profile,
                     GameMode.SURVIVAL,
                     Bars.FIVE.getPing()
@@ -53,7 +53,7 @@ public class Layout {
     private void createTeam(int index) {
         String name = getTeam(index);
         if (player.getScoreboard().getTeam(name) != null) return;
-        player.getScoreboard().registerNewTeam(name).addEntry(name);
+        player.getScoreboard().registerNewTeam(name).addEntry(getContent(index));
     }
 
     public void update(String header, String footer, List<TabEntry> entries) {
@@ -88,7 +88,7 @@ public class Layout {
 
             boolean updated = updateSkin(info, entry.getSkin(), content);
             updatePing(info, entry.getPing());
-            if (!updated && changed) updateContent(info, content.isEmpty() ? ChatColor.RESET.toString() : content);
+            if (!updated && changed) updateContent(info, content.isEmpty() ? getContent(index) : content);
         }
     }
 
@@ -181,7 +181,21 @@ public class Layout {
         return profile;
     }
 
-    public String getTeam(int index) {
+    private String getTeam(int index) {
         return "tab:" + index % 4 + "," + index / 4;
+    }
+
+    private String getContent(int index) {
+        int x = index % 4;
+        int y = index / 4;
+
+        StringBuilder builder = new StringBuilder()
+            .append(ChatColor.COLOR_CHAR).append(x);
+
+        for (char character : String.valueOf(y).toCharArray()) {
+            builder.append(ChatColor.COLOR_CHAR).append(character);
+        }
+
+        return builder.append(ChatColor.RESET).toString();
     }
 }
