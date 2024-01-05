@@ -1,7 +1,7 @@
-package gg.voided.cosmo.tablist.skin;
+package gg.voided.cosmo.tab.skin;
 
-import gg.voided.cosmo.tablist.TabHandler;
-import gg.voided.cosmo.tablist.skin.cache.CachedSkin;
+import gg.voided.cosmo.tab.TabHandler;
+import gg.voided.cosmo.tab.skin.cache.CachedSkin;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;

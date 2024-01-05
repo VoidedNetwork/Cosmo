@@ -1,4 +1,4 @@
-package gg.voided.cosmo.tablist.adapter;
+package gg.voided.cosmo.tab.adapter;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

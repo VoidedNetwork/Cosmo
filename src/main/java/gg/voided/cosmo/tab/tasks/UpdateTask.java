@@ -1,15 +1,13 @@
-package gg.voided.cosmo.tablist.tasks;
+package gg.voided.cosmo.tab.tasks;
 
-import gg.voided.cosmo.tablist.TabHandler;
-import gg.voided.cosmo.tablist.adapter.TabEntry;
-import gg.voided.cosmo.tablist.layout.Layout;
+import gg.voided.cosmo.tab.TabHandler;
+import gg.voided.cosmo.tab.adapter.TabAdapter;
+import gg.voided.cosmo.tab.layout.Layout;
 import gg.voided.cosmo.utils.ExceptionUtils;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class UpdateTask extends BukkitRunnable {
@@ -17,15 +15,20 @@ public class UpdateTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        TabAdapter adapter = handler.getAdapter();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             Layout layout = handler.getLayouts().get(player);
             if (layout == null) continue;
 
             try {
-                List<TabEntry> entries = handler.getAdapter().getEntries(player);
-                layout.update(entries);
+                layout.update(
+                    adapter.getHeader(player),
+                    adapter.getFooter(player),
+                    adapter.getEntries(player)
+                );
             } catch (Exception exception) {
-                String message = "Couldn't update tab for " + player.getName() + ": ";
+                String message = "Failed to update tab for " + player.getName() + ": ";
                 handler.getPlugin().getLogger().severe(message + ExceptionUtils.getStackTrace(exception));
             }
         }

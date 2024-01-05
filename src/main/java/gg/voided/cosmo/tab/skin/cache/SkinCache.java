@@ -1,10 +1,10 @@
-package gg.voided.cosmo.tablist.skin.cache;
+package gg.voided.cosmo.tab.skin.cache;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import gg.voided.cosmo.tablist.skin.Skin;
+import gg.voided.cosmo.tab.skin.Skin;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;

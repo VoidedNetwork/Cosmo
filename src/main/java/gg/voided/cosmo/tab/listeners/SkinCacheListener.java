@@ -1,6 +1,6 @@
-package gg.voided.cosmo.tablist.listeners;
+package gg.voided.cosmo.tab.listeners;
 
-import gg.voided.cosmo.tablist.TabHandler;
+import gg.voided.cosmo.tab.TabHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;

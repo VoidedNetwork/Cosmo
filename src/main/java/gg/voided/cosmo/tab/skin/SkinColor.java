@@ -1,4 +1,4 @@
-package gg.voided.cosmo.tablist.skin;
+package gg.voided.cosmo.tab.skin;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
