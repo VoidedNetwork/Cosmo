@@ -44,7 +44,7 @@ public class Layout {
 
             players.add(
                 new WrapperPlayServerPlayerInfo.PlayerData(
-                    AdventureSerializer.fromLegacyFormat(profile.getName()),
+                    AdventureSerializer.fromLegacyFormat(""),
                     profile,
                     GameMode.SURVIVAL,
                     Bars.FIVE.getPing()
@@ -87,7 +87,7 @@ public class Layout {
 
             boolean updated = updateSkin(info, entry.getSkin(), content);
             updatePing(info, entry.getPing());
-            if (!updated && changed) updateContent(info, content.isEmpty() ? ChatColor.RESET.toString() : content);
+            if (!updated && changed) updateContent(info, content);
         }
     }
 
@@ -181,6 +181,13 @@ public class Layout {
     }
 
     private String getTeam(int index) {
-        return "tab:" + index % 4 + "," + index / 4;
+        StringBuilder builder = new StringBuilder()
+            .append(ChatColor.COLOR_CHAR).append(index % 4);
+
+        for (char character : String.valueOf(index / 4).toCharArray()) {
+            builder.append(ChatColor.COLOR_CHAR).append(character);
+        }
+
+        return builder.append(ChatColor.RESET).toString();
     }
 }
