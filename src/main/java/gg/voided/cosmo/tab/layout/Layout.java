@@ -44,7 +44,7 @@ public class Layout {
 
             players.add(
                 new WrapperPlayServerPlayerInfo.PlayerData(
-                    AdventureSerializer.fromLegacyFormat(ChatColor.RESET.toString()),
+                    AdventureSerializer.fromLegacyFormat(profile.getName()),
                     profile,
                     GameMode.SURVIVAL,
                     Bars.FIVE.getPing()
