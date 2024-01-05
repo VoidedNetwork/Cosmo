@@ -44,10 +44,10 @@ public class Layout {
 
             players.add(
                 new WrapperPlayServerPlayerInfo.PlayerData(
-                    AdventureSerializer.fromLegacyFormat(""),
+                    AdventureSerializer.fromLegacyFormat(name),
                     profile,
                     GameMode.SURVIVAL,
-                    Bars.FIVE.getPing()
+                    Bars.ONE.getPing()
                 )
             );
         }
