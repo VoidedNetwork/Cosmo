@@ -33,17 +33,18 @@ public class Layout {
         WrapperPlayServerPlayerInfo packet = new WrapperPlayServerPlayerInfo(WrapperPlayServerPlayerInfo.Action.ADD_PLAYER);
         List<WrapperPlayServerPlayerInfo.PlayerData> players = packet.getPlayerDataList();
 
-        Team team = player.getScoreboard().getTeam("tab:entry");
-        if (team == null) team = player.getScoreboard().registerNewTeam("tab:entry");
-
         for (int index = 0; index < 80; index++) {
             UserProfile profile = createProfile(index);
             entries.add(new EntryInfo(profile));
-            team.addEntry(getContent(index));
+
+            String name = getTeam(index);
+            Team team = player.getScoreboard().getTeam(name);
+            if (team == null) team = player.getScoreboard().registerNewTeam(name);
+            team.addEntry(profile.getName());
 
             players.add(
                 new WrapperPlayServerPlayerInfo.PlayerData(
-                    AdventureSerializer.fromLegacyFormat(getContent(index)),
+                    AdventureSerializer.fromLegacyFormat(ChatColor.RESET.toString()),
                     profile,
                     GameMode.SURVIVAL,
                     Bars.FIVE.getPing()
@@ -86,7 +87,7 @@ public class Layout {
 
             boolean updated = updateSkin(info, entry.getSkin(), content);
             updatePing(info, entry.getPing());
-            if (!updated && changed) updateContent(info, content.isEmpty() ? getContent(index) : content);
+            if (!updated && changed) updateContent(info, content.isEmpty() ? ChatColor.RESET.toString() : content);
         }
     }
 
@@ -172,24 +173,14 @@ public class Layout {
     }
 
     private UserProfile createProfile(int index) {
-        UserProfile profile = new UserProfile(UUID.randomUUID(), getContent(index));
+        UserProfile profile = new UserProfile(UUID.randomUUID(), getTeam(index));
         TextureProperty texture = new TextureProperty("textures", Skin.DEFAULT.getValue(), Skin.DEFAULT.getSignature());
         profile.setTextureProperties(Collections.singletonList(texture));
 
         return profile;
     }
 
-    private String getContent(int index) {
-        int x = index % 4;
-        int y = index / 4;
-
-        StringBuilder builder = new StringBuilder()
-            .append(ChatColor.COLOR_CHAR).append(x);
-
-        for (char character : String.valueOf(y).toCharArray()) {
-            builder.append(ChatColor.COLOR_CHAR).append(character);
-        }
-
-        return builder.append(ChatColor.RESET).toString();
+    private String getTeam(int index) {
+        return "tab:" + index % 4 + "," + index / 4;
     }
 }
